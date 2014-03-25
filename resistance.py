@@ -13,10 +13,13 @@ def assign(players):
     bad_guys = []
     characters = {}
     random.shuffle(players)
+
+    num_players = len(players)
+    num_bad = num_players / 2
     
-    for i in range(0,3):
+    for i in range(0,num_bad):
         bad_guys += players[i]
-    for j in range(3,6):
+    for j in range(num_bad,num_players):
         good_guys += players[j]
         
     characters["Good"] = good_guys
@@ -31,15 +34,29 @@ def assign(players):
     return characters
 
 """
-Testing for assign
-*assign takes in a list of players of length 7*
+Gets list of players from command line, puts their names onto the game window
 
-"""    
-def test_assign():
-    players3 = ["Diplo", "Lauryn Hill", "Miami Horror", "Clams Casino",
-                      "Mick Jagger", "Gabe", "Heitor Villa-Lobos"]
-    print assign(players3)
+I/P: The window to draw on.
+O/P: The list of players.
 
+"""
+def getPlayers(win):
+    x = raw_input('Enter player names (hit enter if done entering): ')
+    ctr = 1
+    y_pos = 1
+    
+
+    player_list = []
+    
+    while (x != ""):
+        player_name= Entry(Point(140*ctr,180+(30*y_pos)), 20)
+        player_name.setText(x)
+        player_name.draw(win)
+        if ctr % 4 == 0:
+            y_pos += 1
+            ctr = 0
+        ctr += 1
+        x = raw_input('Enter player names (hit enter if done entering): ')
 
 """
 Main program to start the game.
@@ -49,13 +66,11 @@ def main():
     win = GraphWin("The Resistance!", 700, 500)
     win.setBackground('black')
 
-    titleHandle = open('/Users/pingihu/Resistance/title.txt', 'r')
-    title = titleHandle.read()
-    titleHandle.close()
-    print title
-
-    titleText = Text(Point(30,30), title)
+    titleText = Text(Point(350,100), "The Resistance")
     titleText.setTextColor('red')
+    titleText.setStyle('bold italic')
+    titleText.setSize(36)
+    titleText.setFace('courier')
     titleText.draw(win)
 
     ex_out = Rectangle(Point(670,2), Point(705, 30))
@@ -67,9 +82,12 @@ def main():
     x.setStyle('bold')
     x.draw(win)
     
-    player_list = Entry(Point(100,400), 200)
-    player_list.draw(win)
+    getPlayers(win)
+
     
+
+
+
     
 
 main()
